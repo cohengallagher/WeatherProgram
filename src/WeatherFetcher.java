@@ -13,9 +13,11 @@ public class WeatherFetcher {
                 "&longitude=" + longitude +
                 "&current=temperature_2m,apparent_temperature,precipitation,wind_speed_10m,wind_direction_10m";
 
+
         try {
             // Create the connection
             URL url = new URL(meteoURL);
+            System.out.println(meteoURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
