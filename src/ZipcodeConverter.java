@@ -2,47 +2,57 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Scanner;
 import org.json.JSONObject;
 
 public class ZipcodeConverter {
-    int zipCode;
-    String country;
-        try{
-            String apiURL = "https://zippopotam.us/" + country + "/" + zipCode;
+    public static LocationData getLocationFromZip(int zipCode, String country) {
+        // String for connecting to zippopotam.us API
+        String apiURL = "https://zippopotam.us/" + country + "/" + zipCode;
+
+        try {
+            // Create the connection
             URL url = new URL(apiURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
+            // Get response code to confirm there is no errors while fetching data
             int responseCode = conn.getResponseCode();
-            if (responseCode == 200){
+            if (responseCode == 200) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String inputLine;
                 StringBuilder content = new StringBuilder();
+                String inputLine;
 
-                while ((inputLine = in.readLine()) != null){
+                while ((inputLine = in.readLine()) != null) {
                     content.append(inputLine);
                 }
 
                 in.close();
                 conn.disconnect();
 
-                // Parse the response
+
+                // Parse the response from the API
                 JSONObject jsonResponse = new JSONObject(content.toString());
                 String latitude = jsonResponse.getJSONArray("places").getJSONObject(0).getString("latitude");
                 String longitude = jsonResponse.getJSONArray("places").getJSONObject(0).getString("longitude");
-                String city = jsonResponse.getJSONArray("places").getJSONObject(0).getString("city");
-                if(country == "us") {
-                    String state = jsonResponse.getJSONArray("places").getJSONObject(0).getString("state");
-                }
-                try {
-                    String meteoURL = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&" + longitude + "=-97.42&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m" ;
-                    URL meteoUrl = new URL(meteoURL);
-                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                    conn.setRequestMethod("GET");
-                }
-            }
-        }
-    }
+                String city = jsonResponse.getJSONArray("places").getJSONObject(0).getString("place name");
 
+                // Verify if country is US, then parse the state
+                String state;
+                if (country.equalsIgnoreCase("us")) {
+                    state = jsonResponse.getJSONArray("places").getJSONObject(0).getString("state");
+                } else {
+                    state = "N/A";
+                }
+
+                // Returns if no errors, else returns null with error messages
+                return new LocationData(latitude, longitude, city, state);
+            } else {
+                System.out.println("Failed to fetch location data. Code: " + responseCode);
+            }
+        } catch (Exception ex) {
+            System.out.println("Error fetching location data: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }
