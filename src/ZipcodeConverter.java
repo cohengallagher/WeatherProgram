@@ -5,9 +5,9 @@ import java.net.URL;
 import org.json.JSONObject;
 
 public class ZipcodeConverter {
-    public static LocationData getLocationFromZip(int zipCode, String country) {
+    public static LocationData getLocationFromZip(int zipCode) {
         // String for connecting to zippopotam.us API
-        String apiURL = "https://zippopotam.us/" + country + "/" + zipCode;
+        String apiURL = "https://zippopotam.us/us/" + zipCode;
 
         try {
             // Create the connection
@@ -35,14 +35,7 @@ public class ZipcodeConverter {
                 String latitude = jsonResponse.getJSONArray("places").getJSONObject(0).getString("latitude");
                 String longitude = jsonResponse.getJSONArray("places").getJSONObject(0).getString("longitude");
                 String city = jsonResponse.getJSONArray("places").getJSONObject(0).getString("place name");
-
-                // Verify if country is US, then parse the state
-                String state;
-                if (country.equalsIgnoreCase("us")) {
-                    state = jsonResponse.getJSONArray("places").getJSONObject(0).getString("state");
-                } else {
-                    state = "N/A";
-                }
+                String state = jsonResponse.getJSONArray("places").getJSONObject(0).getString("state");
 
                 // Returns if no errors, else returns null with error messages
                 return new LocationData(latitude, longitude, city, state);

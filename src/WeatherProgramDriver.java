@@ -6,16 +6,14 @@ public class WeatherProgramDriver {
 
         System.out.println("Welcome to the Weather Program Driver!");
         System.out.print("Let's begin. Enter your country: ");
-        String country = scanner.nextLine();
-
         System.out.print("Perfect. Enter your zip code: ");
         int zipCode = scanner.nextInt();
 
-        LocationData location = ZipcodeConverter.getLocationFromZip(zipCode, country);
+        LocationData location = ZipcodeConverter.getLocationFromZip(zipCode);
         if (location != null) {
             WeatherData weather = WeatherFetcher.getWeather(location.latitude, location.longitude);
             if (weather != null) {
-                System.out.println(weather);
+                System.out.println("Location: " + );
             }
         }
     }
