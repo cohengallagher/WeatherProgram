@@ -12,6 +12,7 @@ public class ZipcodeConverter {
         try {
             // Create the connection
             URL url = new URL(apiURL);
+            System.out.println(apiURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 

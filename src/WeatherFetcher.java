@@ -13,9 +13,11 @@ public class WeatherFetcher {
                 "&longitude=" + longitude +
                 "&current=temperature_2m,apparent_temperature,precipitation,wind_speed_10m,wind_direction_10m";
 
+
         try {
             // Create the connection
             URL url = new URL(meteoURL);
+            System.out.println(meteoURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
 
@@ -35,11 +37,12 @@ public class WeatherFetcher {
 
                 // Parse the response from the API
                 JSONObject jsonResponse = new JSONObject(content.toString());
-                double temperature = jsonResponse.getJSONArray("current").getJSONObject(0).getDouble("temperature_2m");
-                double realFeel = jsonResponse.getJSONArray("current").getJSONObject(0).getDouble("apparent_temperature");
-                double precipitation = jsonResponse.getJSONArray("current").getJSONObject(0).getDouble("precipitation");
-                double windSpeed = jsonResponse.getJSONArray("current").getJSONObject(0).getDouble("wind_speed_10m");
-                double windDirection = jsonResponse.getJSONArray("current").getJSONObject(0).getDouble("wind_direction_10m");
+                JSONObject current = jsonResponse.getJSONObject("current");
+                double temperature = current.getDouble("temperature_2m");
+                double realFeel = current.getDouble("apparent_temperature");
+                double precipitation = current.getDouble("precipitation");
+                double windSpeed = current.getDouble("wind_speed_10m");
+                double windDirection = current.getDouble("wind_direction_10m");
 
                 // Returns if no errors, else returns null with error messages
                 return new WeatherData(temperature, realFeel, precipitation, windSpeed, windDirection);
