@@ -1,3 +1,11 @@
+/*
+ * WeatherData
+ * Name: Cohen Gallagher
+ * Date: 5/2/2025
+ * Class: Programming in Java
+ * Description: Used to retrieve latitude and longitude from API key.
+ */
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;

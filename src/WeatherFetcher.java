@@ -1,3 +1,11 @@
+/*
+ * WeatherFetcher
+ * Name: Cohen Gallagher
+ * Date: 5/2/2025
+ * Class: Programming in Java
+ * Description: Used to fetch weather data using API key.
+ */
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -11,7 +19,7 @@ public class WeatherFetcher {
         // String for connecting to OpenMeteo API
         String meteoURL = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude +
                 "&longitude=" + longitude +
-                "&current=temperature_2m,apparent_temperature,precipitation,wind_speed_10m,wind_direction_10m";
+                "&current=temperature_2m,apparent_temperature,precipitation,wind_speed_10m,wind_direction_10m,weather_code";
 
 
         try {
@@ -43,9 +51,10 @@ public class WeatherFetcher {
                 double precipitation = current.getDouble("precipitation");
                 double windSpeed = current.getDouble("wind_speed_10m");
                 double windDirection = current.getDouble("wind_direction_10m");
+                int weatherCode = current.getInt("weather_code");
 
                 // Returns if no errors, else returns null with error messages
-                return new WeatherData(temperature, realFeel, precipitation, windSpeed, windDirection);
+                return new WeatherData(temperature, realFeel, precipitation, windSpeed, windDirection, weatherCode);
             } else {
                 System.out.println("Failed to fetch weather data. Code: " + responseCode);
             }
