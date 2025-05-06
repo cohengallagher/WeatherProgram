@@ -15,7 +15,7 @@ speed. When the user clicks the "Check Weather" button, the application validate
 fetches the appropriate location data, and then requests current weather data from Open-Meteo.
 It then updates the labels with the information pulled from the API, and converts the data according 
 to the user's selected units. 
-
+![Example of running program](images/screen-recording.gif)
 Additionally, the application updates the background image according to the weather code. Clear skies
 triggers a sunset with a sun image, while stormy weather will cause a thunderstorm image to reveal itself.
 A reset button is also available to quickly clear all the fields.
